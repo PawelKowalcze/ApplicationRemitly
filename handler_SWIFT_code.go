@@ -7,7 +7,6 @@ import (
 	"github.com/PawelKowalcze/ApplicationRemitly/internal/auth"
 	"github.com/PawelKowalcze/ApplicationRemitly/internal/database"
 	"github.com/google/uuid"
-	"log"
 	"net/http"
 )
 
@@ -120,20 +119,20 @@ func (apiCfg *apiConfig) handlerDeleteEntryForSWIFTCode(w http.ResponseWriter, r
 	}
 
 	Swiftcode, err := auth.GetSWIFTCode(r.URL.Path)
-	fmt.Println(Swiftcode)
+
 	if err != nil {
 		respondWithError(w, 403, fmt.Sprintf("Error getting SWIFT code: %v", err))
 		return
 	}
 
 	exists, err := apiCfg.DB.CheckSWIFTCodeExists(context.Background(), Swiftcode)
-	fmt.Println(exists)
+
 	if err != nil {
-		log.Fatalf("Failed to check if SWIFT code exists: %v", err)
+		respondWithError(w, 400, fmt.Sprintf("Failed to check if SWIFT code exists: %v", err))
 		return
 	}
 	if !exists {
-		log.Fatalf("SWIFT code %s does not exist", Swiftcode)
+		respondWithError(w, 400, fmt.Sprintf("SWIFT code %s does not exist", Swiftcode))
 		return
 	}
 
@@ -143,7 +142,7 @@ func (apiCfg *apiConfig) handlerDeleteEntryForSWIFTCode(w http.ResponseWriter, r
 		respondWithError(w, 403, fmt.Sprintf("Couldn't delete entry for given SWIFT code: %v", err))
 		return
 	}
-	fmt.Println("Deleted entry for given SWIFT code")
+
 	responseMessage := mess{Message: "SWIFT code entry deleted successfully"}
 	respondWithJSON(w, 200, responseMessage)
 

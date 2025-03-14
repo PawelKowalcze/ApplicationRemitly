@@ -44,13 +44,13 @@ func main() {
 	filePath := "Interns_2025_SWIFT_CODES.xlsx"
 	swiftCodes, err := parseSwiftCodes(filePath)
 	if err != nil {
-		log.Fatalf("Failed to parse SWIFT codes: %v", err)
+		log.Printf("Failed to parse SWIFT codes: %v", err)
 	}
 
 	for i, code := range swiftCodes {
 		exists, err := apiCfg.DB.CheckSWIFTCodeExists(context.Background(), code.SWIFTCode)
 		if err != nil {
-			log.Fatalf("Failed to check if SWIFT code exists: %v", err)
+			log.Printf("Error checking if swift code exists: %v", err)
 		}
 
 		if exists {
@@ -77,7 +77,7 @@ func main() {
 		})
 
 		if err != nil {
-			log.Fatalf("Failed to add SWIFT code: %v", err)
+			log.Printf("Failed to add SWIFT code: %v", err)
 		}
 	}
 
