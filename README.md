@@ -8,12 +8,11 @@ sql\schema> goose postgres postgres://pawel:pass@localhost:5432/ApplicationRemit
 C:\Users\kowal\OneDrive\Pulpit\Go\ApplicationRemitly> sqlc generate
 
 
-### GET request to example server
-GET http://localhost:8080/v1/swift-codes
-Code: SWIFTCode ALBPPLP1BMW
+### Endpoint 1: GET request Return all SWIFT codes with details for a specific country (both headquarters and branches)
+GET http://localhost:8080/v1/swift-codes/ALBPPLP1BMW
 ###
 
-### POST request to example server
+### Endpoint 3: POST request  Adds new SWIFT code entries to the database for a specific country
 POST http://localhost:8080/v1/swift-codes
 
 {

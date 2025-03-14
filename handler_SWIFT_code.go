@@ -1,17 +1,19 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/PawelKowalcze/ApplicationRemitly/internal/auth"
 	"github.com/PawelKowalcze/ApplicationRemitly/internal/database"
 	"github.com/google/uuid"
+	"log"
 	"net/http"
 )
 
 func (apiCfg *apiConfig) handlerSWIFTCode(w http.ResponseWriter, r *http.Request) {
 	type message struct {
-		Message string
+		Message string `json:"message"`
 	}
 
 	type parameters struct {
@@ -86,4 +88,63 @@ func (apiCfg *apiConfig) handlerGetEntryBySWIFTCode(w http.ResponseWriter, r *ht
 		return
 	}
 	respondWithJSON(w, 400, fmt.Sprintf("SWIFT code is not headquarter nor branch"))
+}
+
+func (apiCfg *apiConfig) handlerGetEntriesByCountryCode(w http.ResponseWriter, r *http.Request) {
+	CountryCode, err := auth.GetCountryCode(r.URL.Path)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Error getting country code: %v", err))
+		return
+	}
+	CodeSlice, err := apiCfg.DB.GetEntryByCountryCode(r.Context(), CountryCode)
+	if err != nil {
+		respondWithError(w, 400, fmt.Sprintf("Couldn't get country code entry: %v", err))
+		return
+	}
+	mainInfo := Country_Code{
+		Countrycode: CountryCode,
+		Countryname: CodeSlice[0].Countryname, // Assuming all entries have the same country name
+		SwiftCodes:  make([]SwiftCode_BranchForHeadquarter, len(CodeSlice)),
+	}
+
+	for i, code := range CodeSlice {
+		mainInfo.SwiftCodes[i] = databaseSwiftCodeToSwiftCode_BranchForHeadquarter(code)
+	}
+	respondWithJSON(w, 200, mainInfo)
+	return
+}
+
+func (apiCfg *apiConfig) handlerDeleteEntryForSWIFTCode(w http.ResponseWriter, r *http.Request) {
+	type mess struct {
+		Message string `json:"message"`
+	}
+
+	Swiftcode, err := auth.GetSWIFTCode(r.URL.Path)
+	fmt.Println(Swiftcode)
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Error getting SWIFT code: %v", err))
+		return
+	}
+
+	exists, err := apiCfg.DB.CheckSWIFTCodeExists(context.Background(), Swiftcode)
+	fmt.Println(exists)
+	if err != nil {
+		log.Fatalf("Failed to check if SWIFT code exists: %v", err)
+		return
+	}
+	if !exists {
+		log.Fatalf("SWIFT code %s does not exist", Swiftcode)
+		return
+	}
+
+	err = apiCfg.DB.DeleteSWIFTCodeEntry(r.Context(), Swiftcode)
+
+	if err != nil {
+		respondWithError(w, 403, fmt.Sprintf("Couldn't delete entry for given SWIFT code: %v", err))
+		return
+	}
+	fmt.Println("Deleted entry for given SWIFT code")
+	responseMessage := mess{Message: "SWIFT code entry deleted successfully"}
+	respondWithJSON(w, 200, responseMessage)
+
 }

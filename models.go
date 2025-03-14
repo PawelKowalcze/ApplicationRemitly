@@ -31,6 +31,19 @@ type SwiftCode_Headquarter struct {
 	Branches      []SwiftCode_BranchForHeadquarter `json:"branches"`
 }
 
+type Country_Code struct {
+	Countrycode string                           `json:"countryISO2"`
+	Countryname string                           `json:"countryName"`
+	SwiftCodes  []SwiftCode_BranchForHeadquarter `json:"swiftCodes"`
+}
+
+func databaseCountryCodeToCountryCode(dbSwiftCode database.SwiftCode) Country_Code {
+	return Country_Code{
+		Countrycode: dbSwiftCode.Countrycode,
+		Countryname: dbSwiftCode.Countryname,
+	}
+}
+
 func databaseSwiftCodeToSwiftCode_Headquarter(dbSwiftCode database.SwiftCode) SwiftCode_Headquarter {
 	return SwiftCode_Headquarter{
 		Countrycode:   dbSwiftCode.Countrycode,

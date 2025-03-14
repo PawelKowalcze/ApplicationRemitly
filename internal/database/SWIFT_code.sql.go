@@ -73,12 +73,60 @@ func (q *Queries) CreateSWIFTCodeEntry(ctx context.Context, arg CreateSWIFTCodeE
 	return i, err
 }
 
+const deleteSWIFTCodeEntry = `-- name: DeleteSWIFTCodeEntry :exec
+DELETE FROM SWIFT_code WHERE swiftCode = $1
+`
+
+func (q *Queries) DeleteSWIFTCodeEntry(ctx context.Context, swiftcode string) error {
+	_, err := q.db.ExecContext(ctx, deleteSWIFTCodeEntry, swiftcode)
+	return err
+}
+
 const getBranchesByAssociatedWith = `-- name: GetBranchesByAssociatedWith :many
 SELECT id, countrycode, swiftcode, codetype, name, address, townname, timezone, countryname, isheadquarter, associatedwith FROM SWIFT_code WHERE associatedWith = $1
 `
 
 func (q *Queries) GetBranchesByAssociatedWith(ctx context.Context, associatedwith int32) ([]SwiftCode, error) {
 	rows, err := q.db.QueryContext(ctx, getBranchesByAssociatedWith, associatedwith)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []SwiftCode
+	for rows.Next() {
+		var i SwiftCode
+		if err := rows.Scan(
+			&i.ID,
+			&i.Countrycode,
+			&i.Swiftcode,
+			&i.Codetype,
+			&i.Name,
+			&i.Address,
+			&i.Townname,
+			&i.Timezone,
+			&i.Countryname,
+			&i.Isheadquarter,
+			&i.Associatedwith,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getEntryByCountryCode = `-- name: GetEntryByCountryCode :many
+SELECT id, countrycode, swiftcode, codetype, name, address, townname, timezone, countryname, isheadquarter, associatedwith FROM SWIFT_code WHERE countryCode = $1
+`
+
+func (q *Queries) GetEntryByCountryCode(ctx context.Context, countrycode string) ([]SwiftCode, error) {
+	rows, err := q.db.QueryContext(ctx, getEntryByCountryCode, countrycode)
 	if err != nil {
 		return nil, err
 	}

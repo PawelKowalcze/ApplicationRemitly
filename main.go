@@ -97,7 +97,8 @@ func main() {
 	v1Router.Get("/err", handlerErr)
 	v1Router.Post("/swift-codes", apiCfg.handlerSWIFTCode)
 	v1Router.Get("/swift-codes/{swift-code}", apiCfg.handlerGetEntryBySWIFTCode)
-
+	v1Router.Delete("/swift-codes/{swift-code}", apiCfg.handlerDeleteEntryForSWIFTCode)
+	v1Router.Get("/swift-codes/country/{countryISO2code}", apiCfg.handlerGetEntriesByCountryCode)
 	router.Mount("/v1", v1Router)
 
 	srv := &http.Server{

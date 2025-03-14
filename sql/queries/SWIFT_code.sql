@@ -11,3 +11,9 @@ SELECT EXISTS (SELECT 1 FROM SWIFT_code WHERE swiftCode = $1);
 
 -- name: GetBranchesByAssociatedWith :many
 SELECT * FROM SWIFT_code WHERE associatedWith = $1;
+
+-- name: DeleteSWIFTCodeEntry :exec
+DELETE FROM SWIFT_code WHERE swiftCode = $1;
+
+-- name: GetEntryByCountryCode :many
+SELECT * FROM SWIFT_code WHERE countryCode = $1;
