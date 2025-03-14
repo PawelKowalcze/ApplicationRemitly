@@ -1,0 +1,12 @@
+### POST request to example server
+POST http://localhost:8080/v1/swift-codes
+
+{
+    "address": "Cracow",
+    "bankName": "ING",
+    "countryISO2": "PL",
+    "countryName": "Poland",
+    "isHeadquarter": true,
+    "swiftCode": "INGOPLPWXXX"
+}
+###
