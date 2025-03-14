@@ -2,24 +2,17 @@ package auth
 
 import (
 	"errors"
-	"net/http"
 	"strings"
 )
 
-// GetSWIFTCode extracts the SWIFTCode from the headers
-// Example:
-// Code: SWIFTCode {insert SWIFTCode here}
-func GetSWIFTCode(headers http.Header) (string, error) {
-	val := headers.Get("Code")
-	if val == "" {
-		return "", errors.New("code header not found")
+func GetSWIFTCode(urlPath string) (string, error) {
+	parts := strings.Split(urlPath, "/")
+	if len(parts) < 3 {
+		return "", errors.New("invalid URL path")
 	}
-	vals := strings.Split(val, " ")
-	if len(vals) != 2 {
-		return "", errors.New("invalid code header")
+	swiftCode := parts[len(parts)-1]
+	if swiftCode == "" {
+		return "", errors.New("SWIFT code not found in URL path")
 	}
-	if vals[0] != "SWIFTCode" {
-		return "", errors.New("malformed first auth header")
-	}
-	return vals[1], nil
+	return swiftCode, nil
 }

@@ -47,7 +47,7 @@ func main() {
 		log.Fatalf("Failed to parse SWIFT codes: %v", err)
 	}
 
-	for _, code := range swiftCodes {
+	for i, code := range swiftCodes {
 		exists, err := apiCfg.DB.CheckSWIFTCodeExists(context.Background(), code.SWIFTCode)
 		if err != nil {
 			log.Fatalf("Failed to check if SWIFT code exists: %v", err)
@@ -55,6 +55,10 @@ func main() {
 
 		if exists {
 			log.Printf("SWIFT code %s already exists, skipping", code.SWIFTCode)
+			continue
+		}
+
+		if i == 0 {
 			continue
 		}
 
@@ -92,7 +96,7 @@ func main() {
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerErr)
 	v1Router.Post("/swift-codes", apiCfg.handlerSWIFTCode)
-	v1Router.Get("/swift-codes", apiCfg.handlerGetEntryBySWIFTCode)
+	v1Router.Get("/swift-codes/{swift-code}", apiCfg.handlerGetEntryBySWIFTCode)
 
 	router.Mount("/v1", v1Router)
 

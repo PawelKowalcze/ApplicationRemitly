@@ -8,3 +8,6 @@ SELECT * FROM SWIFT_code WHERE swiftCode = $1;
 
 -- name: CheckSWIFTCodeExists :one
 SELECT EXISTS (SELECT 1 FROM SWIFT_code WHERE swiftCode = $1);
+
+-- name: GetBranchesByAssociatedWith :many
+SELECT * FROM SWIFT_code WHERE associatedWith = $1;
