@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
+	"github.com/pressly/goose/v3"
 	"log"
 	"net/http"
 	"os"
@@ -36,6 +37,11 @@ func main() {
 	if err != nil {
 		log.Fatal("Can't connect to database", err)
 	}
+
+	if err = goose.Up(conn, "sql/schema"); err != nil {
+		log.Printf("error running schema migrations: %v", err)
+	}
+
 	db := database.New(conn)
 	apiCfg := apiConfig{
 		DB: db,

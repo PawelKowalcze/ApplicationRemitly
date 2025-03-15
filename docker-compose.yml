@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:15
     environment:
-        POSTGRES_USER: pawel
+        POSTGRES_USER: postgres
         POSTGRES_PASSWORD: password
         POSTGRES_DB: postgres
     volumes:
@@ -17,7 +17,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_URL: postgres://pawel:password@db:5432/postgres?sslmode=disable
+      DB_URL: postgres://postgres:password@db:5432/postgres?sslmode=disable
       PORT: 8080
     ports:
       - "8080:8080"
@@ -26,6 +26,18 @@ services:
 
     volumes:
       - .:/usr/src
+
+
+#  goose:
+#    build: .
+#    depends_on:
+#       - db
+#    environment:
+#        DB_DRIVER: postgres
+#        DB_STRING: "user=postgres password=password dbname=postgres sslmode=disable host=db port=5432"
+#    volumes:
+#          - .:/usr/src
+#    command: [ "up" ]
 
 volumes:
   db_data:
