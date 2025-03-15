@@ -2,9 +2,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: swiftcodes
+        POSTGRES_USER: pawel
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: postgres
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
@@ -17,11 +17,15 @@ services:
     depends_on:
       - db
     environment:
-      DB_URL: postgres://postgres:password@db:5432/swiftcodes?sslmode=disable
+      DB_URL: postgres://pawel:password@db:5432/postgres?sslmode=disable
       PORT: 8080
     ports:
       - "8080:8080"
-    command: ["/app/main"]
+#    command: [ "go build", "./ApplicationRemitly" ]
+
+
+    volumes:
+      - .:/usr/src
 
 volumes:
   db_data:

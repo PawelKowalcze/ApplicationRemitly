@@ -23,3 +23,7 @@ POST http://localhost:8080/v1/swift-codes
 "isHeadquarter": true,
 "swiftCode": "INGOPLPWXXX"
 }
+
+
+docker-compose up
+docker-compose run --service-ports web bash
