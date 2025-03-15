@@ -28,16 +28,5 @@ services:
       - .:/usr/src
 
 
-#  goose:
-#    build: .
-#    depends_on:
-#       - db
-#    environment:
-#        DB_DRIVER: postgres
-#        DB_STRING: "user=postgres password=password dbname=postgres sslmode=disable host=db port=5432"
-#    volumes:
-#          - .:/usr/src
-#    command: [ "up" ]
-
 volumes:
   db_data:

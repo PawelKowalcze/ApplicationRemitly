@@ -1,16 +1,42 @@
 # ApplicationRemitly
+Run this commands in terminal to run the application/
+```
+docker-compose build
+docker-compose up
+```
+In different terminal\
+```
+docker-compose run --service-ports api bash
+go build
+./ApplicationRemitly
+```
 
-install postgresql
-install pgadmin4
-in pgadmin4 create a database called ApplicationRemitly
+Use pg4admin to connect to the database\
+Regiser server:
+ - general:
+   name: docker
+ - connection:
+   hostname: localhost\
+   port: 5432\
+   username: postgres\
+   password: password
 
-sql\schema> goose postgres postgres://pawel:pass@localhost:5432/ApplicationRemitly up
-C:\Users\kowal\OneDrive\Pulpit\Go\ApplicationRemitly> sqlc generate
+In query tool:
+- SELECT * FROM swift_code
+
+to see all the data in the database
 
 
-### Endpoint 1: GET request Return all SWIFT codes with details for a specific country (both headquarters and branches)
-GET http://localhost:8080/v1/swift-codes/ALBPPLP1BMW
+In http-tests directory there are files with http requests that can be used to test the application.
+
+### Endpoint 1: GET request Return SWIFT code details for a specific SWIFT code
+GET http://localhost:8080/v1/swift-codes/ABIEBGS1XXX
+
+### Endpoint 2: GET request Return all SWIFT codes with details for a specific country (both headquarters and branches)
+GET http://localhost:8080/v1/swift-codes/country/PL
 ###
+
+
 
 ### Endpoint 3: POST request  Adds new SWIFT code entries to the database for a specific country
 POST http://localhost:8080/v1/swift-codes
@@ -24,6 +50,8 @@ POST http://localhost:8080/v1/swift-codes
 "swiftCode": "INGOPLPWXXX"
 }
 
+### Endpoint 4: DELETE request to example server
+DELETE http://localhost:8080/v1/swift-codes/ABIEBGS1XXX
 
-docker-compose up
-docker-compose run --service-ports web bash
+
+
