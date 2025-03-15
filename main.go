@@ -38,6 +38,7 @@ func main() {
 		log.Fatal("Can't connect to database", err)
 	}
 
+	//Run migrations:
 	if err = goose.Up(conn, "sql/schema"); err != nil {
 		log.Printf("error running schema migrations: %v", err)
 	}

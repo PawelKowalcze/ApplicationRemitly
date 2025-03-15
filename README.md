@@ -1,10 +1,11 @@
 # ApplicationRemitly
-Run this commands in terminal to run the application/
+Hello, this is my application that allows you to manage SWIFT codes.\
+In order to start this app run this commands in terminal in ApplicationRemitly directory.
 ```
 docker-compose build
 docker-compose up
 ```
-In different terminal\
+In different terminal
 ```
 docker-compose run --service-ports api bash
 go build
