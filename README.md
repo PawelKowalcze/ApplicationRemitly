@@ -1,7 +1,10 @@
 # ApplicationRemitly
-Hello, this is my application that allows you to manage SWIFT codes.\
+Hello, this is my application that allows you to manage SWIFT codes.
 # Step 1
-Install git for your operating system, and docker desktop/
+Install git for your operating system, and docker desktop.\
+Make sure that you have latest version of go installed:\
+You can downolad it from this link: https://go.dev/dl/
+
 # Setep 2
 Clone this repository into your chosen directory: open git bash and clone this repository using command
 ```
