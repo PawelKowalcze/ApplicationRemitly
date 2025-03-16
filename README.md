@@ -1,5 +1,14 @@
 # ApplicationRemitly
 Hello, this is my application that allows you to manage SWIFT codes.\
+# Step 1
+Install git for your operating system, and docker desktop/
+# Setep 2
+Clone this repository into your chosen directory: open git bash and clone this repository using command
+```
+git clone https://github.com/PawelKowalcze/ApplicationRemitly.git 
+```
+# Step 3
+Open Windows PowerShell in your directory.\
 In order to start this app run this commands in terminal in ApplicationRemitly directory.
 ```
 docker-compose build
