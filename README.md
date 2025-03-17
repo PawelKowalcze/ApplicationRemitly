@@ -5,12 +5,14 @@ Install git for your operating system, and docker desktop.\
 Make sure that you have latest version of go installed:\
 You can downolad it from this link: https://go.dev/dl/
 
-# Setep 2
+# Step 2
 Clone this repository into your chosen directory: open git bash and clone this repository using command
 ```
 git clone https://github.com/PawelKowalcze/ApplicationRemitly.git 
 ```
 # Step 3
+Run Docker Desktop
+# Step 4
 Open Windows PowerShell in your directory.\
 In order to start this app run this commands in terminal in ApplicationRemitly directory.
 ```
