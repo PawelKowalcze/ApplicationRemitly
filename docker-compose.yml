@@ -6,8 +6,8 @@ services:
         POSTGRES_PASSWORD: password
         POSTGRES_DB: postgres
     volumes:
-      - db_data:/var/lib/postgresql/data # This is the volume that will be created, change db_data to sth else if an error occurs
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - db_data:/var/lib/postgresql/data3 # This is the volume that will be created, change /var/lib/postgresql/data to /var/lib/postgresql/<sthelse> if an error occurs
+      - ./pg_hba.conf:/var/lib/postgresql/data3/pg_hba.conf # Then this to /var/lib/postgresql/<sthelse>
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"

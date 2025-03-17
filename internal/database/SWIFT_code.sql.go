@@ -82,6 +82,33 @@ func (q *Queries) DeleteSWIFTCodeEntry(ctx context.Context, swiftcode string) er
 	return err
 }
 
+const getAllSWIFTCodes = `-- name: GetAllSWIFTCodes :many
+SELECT swiftCode FROM SWIFT_code
+`
+
+func (q *Queries) GetAllSWIFTCodes(ctx context.Context) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, getAllSWIFTCodes)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var swiftcode string
+		if err := rows.Scan(&swiftcode); err != nil {
+			return nil, err
+		}
+		items = append(items, swiftcode)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getBranchesByAssociatedWith = `-- name: GetBranchesByAssociatedWith :many
 SELECT id, countrycode, swiftcode, codetype, name, address, townname, timezone, countryname, isheadquarter, associatedwith FROM SWIFT_code WHERE associatedWith = $1
 `

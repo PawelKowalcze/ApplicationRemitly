@@ -10,6 +10,43 @@ import (
 	"net/http"
 )
 
+//func (apiCfg *apiConfig) handlerUpdateAssociatedWith(w http.ResponseWriter, r *http.Request) {
+//	type message struct {
+//		Message string `json:"message"`
+//	}
+//
+//	// Fetch all SWIFT codes from the database
+//	swiftCodes, err := apiCfg.DB.GetAllSWIFTCodes(r.Context())
+//	if err != nil {
+//		respondWithError(w, 500, fmt.Sprintf("Error fetching SWIFT codes: %v", err))
+//		return
+//	}
+//
+//	// Calculate isAssociatedWith values
+//	var headquarterCodes []string
+//	for _, code := range swiftCodes {
+//		if code[len(code)-3:] == "XXX" {
+//			headquarterCodes = append(headquarterCodes, code[:8])
+//		} else {
+//			headquarterCodes = append(headquarterCodes, "")
+//		}
+//	}
+//
+//	var associatedWith = make([]int, len(swiftCodes))
+//	for i, code := range swiftCodes {
+//		index, ok := contains(headquarterCodes, code[:8])
+//		if ok {
+//			associatedWith[i] = index
+//		}
+//	}
+//
+//
+//
+//	responseMessage := message{Message: "SWIFT codes updated successfully"}
+//	respondWithJSON(w, 200, responseMessage)
+//
+//}
+
 func (apiCfg *apiConfig) handlerSWIFTCode(w http.ResponseWriter, r *http.Request) {
 	type message struct {
 		Message string `json:"message"`
@@ -76,6 +113,10 @@ func (apiCfg *apiConfig) handlerGetEntryBySWIFTCode(w http.ResponseWriter, r *ht
 		headquarter := databaseSwiftCodeToSwiftCode_Headquarter(code)
 		headquarter.Branches = make([]SwiftCode_BranchForHeadquarter, len(branches))
 		for i, branch := range branches {
+			if headquarter.Isheadquarter {
+				respondWithJSON(w, 200, headquarter)
+				return
+			}
 			headquarter.Branches[i] = databaseSwiftCodeToSwiftCode_BranchForHeadquarter(branch)
 		}
 		respondWithJSON(w, 200, headquarter)

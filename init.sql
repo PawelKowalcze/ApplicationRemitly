@@ -1,3 +1,3 @@
-CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
-CREATE DATABASE postgres;
-GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;
+-- CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
+-- CREATE DATABASE postgres;
+-- GRANT ALL PRIVILEGES ON DATABASE postgres TO postgres;

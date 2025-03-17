@@ -17,3 +17,6 @@ DELETE FROM SWIFT_code WHERE swiftCode = $1;
 
 -- name: GetEntryByCountryCode :many
 SELECT * FROM SWIFT_code WHERE countryCode = $1;
+
+-- name: GetAllSWIFTCodes :many
+SELECT swiftCode FROM SWIFT_code;
